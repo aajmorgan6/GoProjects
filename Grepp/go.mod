@@ -1,4 +1,4 @@
-module grep_clone
+module grepp
 
 go 1.22.3
 

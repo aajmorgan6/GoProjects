@@ -13,7 +13,7 @@ import (
 
 type args struct {
 	P       string   `arg:"positional"`
-	File    []string `arg:"positional"`
+	File    []string `arg:"positional" required:"false"`
 	Lower   bool     `arg:"-i" help:"case insensitive search" default:"false"`
 	Inverse bool     `arg:"-v" help:"invert search, don't use specified pattern" default:"false"`
 }
@@ -116,29 +116,52 @@ func loadText(fileScanner *bufio.Scanner) []string {
 
 func main() {
 	var args args
+	info, _ := os.Stdin.Stat()
 	arg.MustParse(&args)
 	fmt.Println("File(s): ", args.File)
 	fmt.Println("Pattern: ", args.P)
+	var stdin bool
+	if info.Mode()&os.ModeCharDevice == 0 {
+		stdin = true
+		args.File = append(args.File, "none")
+	} else {
+		stdin = false
+	}
+	fmt.Printf("stdin: %t\n", stdin)
 	texts := make([][]string, len(args.File))
 	all_lines := make([][]int, len(args.File))
 	for i := 0; i < len(args.File); i++ {
-		data, err := os.Open(args.File[i])
-		check(err)
-		fileScanner := bufio.NewScanner(data)
-		fileScanner.Split(bufio.ScanLines)
-		text := loadText(fileScanner)
+		var text []string
+		var fileScanner *bufio.Scanner
+		if stdin {
+			fileScanner = bufio.NewScanner(os.Stdin)
+		} else {
+			data, err := os.Open(args.File[i])
+			check(err)
+			fileScanner = bufio.NewScanner(data)
+			fileScanner.Split(bufio.ScanLines)
+			data.Close()
+		}
+		text = loadText(fileScanner)
+
 		texts[i] = make([]string, len(text))
 		texts[i] = text
-		data.Close()
+
 		lines := search(texts[i], args)
 		all_lines[i] = make([]int, len(lines))
 		all_lines[i] = lines
 	}
-	for i := 0; i < len(all_lines); i++ {
-		fmt.Print("------", args.File[i], "-----\n\n")
-		for j := 0; j < len(all_lines[i]); j++ {
-			fmt.Println(texts[i][all_lines[i][j]])
+	if len(args.File) == 1 {
+		for i := 0; i < len(all_lines[0]); i++ {
+			fmt.Println(texts[0][all_lines[0][i]])
 		}
-		fmt.Print("\n\n")
+	} else {
+		for i := 0; i < len(all_lines); i++ {
+			fmt.Print("------", args.File[i], "-----\n\n")
+			for j := 0; j < len(all_lines[i]); j++ {
+				fmt.Println(texts[i][all_lines[i][j]])
+			}
+			fmt.Print("\n\n")
+		}
 	}
 }
