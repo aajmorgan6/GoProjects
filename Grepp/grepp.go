@@ -132,17 +132,18 @@ func main() {
 	all_lines := make([][]int, len(args.File))
 	for i := 0; i < len(args.File); i++ {
 		var text []string
-		var fileScanner *bufio.Scanner
+		// var fileScanner *bufio.Scanner
 		if stdin {
-			fileScanner = bufio.NewScanner(os.Stdin)
+			fileScanner1 := bufio.NewScanner(os.Stdin)
+			text = loadText(fileScanner1)
 		} else {
 			data, err := os.Open(args.File[i])
 			check(err)
-			fileScanner = bufio.NewScanner(data)
-			fileScanner.Split(bufio.ScanLines)
-			data.Close()
+			fileScanner2 := bufio.NewScanner(data)
+			fileScanner2.Split(bufio.ScanLines)
+			text = loadText(fileScanner2)
+			data.Close() // have to close after everything is done
 		}
-		text = loadText(fileScanner)
 
 		texts[i] = make([]string, len(text))
 		texts[i] = text
