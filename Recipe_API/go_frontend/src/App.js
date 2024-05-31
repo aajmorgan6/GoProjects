@@ -4,8 +4,7 @@ import RecipesPage from "./RecipesPage";
 import Home from "./Home";
 import React from "react";
 
-class App extends React.Component {
-  render() {
+function App() {
     return (
       <Router>          
           <Routes>
@@ -14,7 +13,6 @@ class App extends React.Component {
           </Routes>
       </Router>
     );
-  }
 }
 
 export default App;

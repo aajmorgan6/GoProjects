@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"recipe_api/recipes"
 
-	"github.com/gosimple/slug"
-
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/gosimple/slug"
 )
 
 /*
@@ -27,6 +27,8 @@ func main() {
 	router.DELETE("/recipes/:id", recipesHandler.DeleteRecipe)
 
 	fmt.Println("Starting server...")
+
+	router.Use(cors.Default())
 
 	router.Run()
 
