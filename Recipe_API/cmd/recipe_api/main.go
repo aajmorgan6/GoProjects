@@ -16,6 +16,10 @@ followed tutorial at https://www.jetbrains.com/guide/go/tutorials/rest_api_serie
 func main() {
 	router := gin.Default()
 
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	router.Use(cors.New(corsConfig))
+
 	store := recipes.NewMemStore()
 	recipesHandler := NewRecipesHandler(store)
 
@@ -27,8 +31,6 @@ func main() {
 	router.DELETE("/recipes/:id", recipesHandler.DeleteRecipe)
 
 	fmt.Println("Starting server...")
-
-	router.Use(cors.Default())
 
 	router.Run()
 
