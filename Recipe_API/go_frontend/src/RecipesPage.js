@@ -1,4 +1,5 @@
 import { React, useState, useEffect } from "react";
+import { Button } from '@mui/material';
 
 function RecipesPage() {
     const [data, setData] = useState([]);
@@ -15,10 +16,10 @@ function RecipesPage() {
     }, [])
 
     return (
-        <div>
+        <div className="container">
             <h1>Welcome to the Recipies Page!</h1>
-            <table className="table">
-                <thead>
+            <table className="table table-striped table-bordered">
+                <thead className="thead-dark">
                     <tr>
                         <th scope="col">Name</th>
                         <th scope="col">Ingredients</th>
@@ -26,13 +27,14 @@ function RecipesPage() {
                 </thead>
                 <tbody>
                     {Object.keys(data).map(key => (
-                        <tr key={key}>
+                        <tr key={key} scope="row">
                             <td>{data[key].name}</td>
                             <td>{data[key].ingredients}</td>
                         </tr>
                     ))}
                 </tbody>
             </table>
+            <Button href="/" variant="contained">Back</Button>
         </div>
     
     )
