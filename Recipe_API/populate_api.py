@@ -9,6 +9,14 @@ headers_list = [
     {
         "name": "grilled cheese",
         "ingredients": "2 slices of bread, 3 slices of cheese"
+    },
+    {
+        "name": "PB&J",
+        "ingredients": "2 slices of bread, peanut butter, jelly"
+    },
+    {
+        "name": "Arroz con pollo",
+        "ingredients": "rice with chicken"
     }
 ]
 
