@@ -3,6 +3,7 @@ import './App.css';
 import RecipesPage from "./RecipesPage";
 import Home from "./Home";
 import React from "react";
+import AddRecipe from "./Pages/AddRecipe";
 
 function App() {
     return (
@@ -10,6 +11,7 @@ function App() {
           <Routes>
             <Route exact path="/" element={<Home />}/>
             <Route path="/recipes" element={<RecipesPage />}/>
+            <Route path="/recipes/add" element={<AddRecipe />}/>
           </Routes>
       </Router>
     );

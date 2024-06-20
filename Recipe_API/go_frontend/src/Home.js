@@ -4,9 +4,9 @@ import { Link } from "react-router-dom";
 function Home() {
 
     return (
-        <div>
+        <div className="justify-content-center">
             <h3>This is the Home Page</h3>
-            <ul>
+            <ul className="justify-content-center">
                 <li>
                     <Link to="/">Home</Link>
                 </li>
